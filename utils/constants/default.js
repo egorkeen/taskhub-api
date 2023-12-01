@@ -1,0 +1,1 @@
+module.exports.defaultImage = 'https://chopio.club/uploads/posts/2022-08/1659845918_9-beolin-club-p-serii-kot-risunok-rebenka-krasivo-10.jpg';

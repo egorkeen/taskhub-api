@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const validator = require('validator');
 const AuthorizeError = require('../errors/AuthorizeError');
-const { defaultImage, URL_REGEX } = require('../utils/constants');
+const { defaultImage } = require('../utils/constants/default');
+const { URL_REGEX } = require('../utils/constants/regex');
 
 const userSchema = mongoose.Schema({
   nickname: {

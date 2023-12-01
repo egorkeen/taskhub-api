@@ -1,7 +1,6 @@
 const { setToDatabase, getFromDatabase } = require('../utils/database');
-const { boards } = require('../utils/constants');
+const { boards } = require('../utils/constants/paths');
 const { v4: uuid4 } = require('uuid');
-const {all} = require("express/lib/application");
 
 module.exports.createBoard = async (req, res, next) => {
   try {
@@ -26,7 +25,7 @@ module.exports.createBoard = async (req, res, next) => {
       // shareLink
       lists,
     };
-    const result = await setToDatabase('boards', newBoard);
+    const result = await setToDatabase(boards, newBoard);
     res.send(result);
   } catch (err) {
     console.log(err);
