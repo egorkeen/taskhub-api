@@ -1,1 +1,1 @@
-module.exports.boards = 'boards';
+module.exports.BOARDS = 'boards';
