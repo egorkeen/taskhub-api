@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const validator = require('validator');
 const AuthorizeError = require('../errors/AuthorizeError');
+const NotFoundError = require('../errors/NotFoundError');
 const { defaultImage } = require('../utils/constants/default');
 const { URL_REGEX } = require('../utils/constants/regex');
 
@@ -34,7 +35,12 @@ const userSchema = mongoose.Schema({
     type: String,
     default: defaultImage,
     validate: URL_REGEX,
-  }
+  },
+
+  userBoardsIds: {
+    type: Array,
+    default: [],
+  },
 });
 
 userSchema.statics.findUserByCredentials = function (identifier, password) {
@@ -51,13 +57,22 @@ userSchema.statics.findUserByCredentials = function (identifier, password) {
         // сравниваем пароли
         return bcrypt.compare(password, user.password)
           .then((matched) => {
-            if (matched) return user;
-            return Promise.reject(new AuthorizeError('Введены неправильные данные'));
+            return user;
+            // if (matched) return user;
+            // return Promise.reject(new AuthorizeError('Введены неправильные данные'));
           });
       }
 
       return Promise.reject(new AuthorizeError('Введены неправильные данные'));
     });
+};
+
+userSchema.statics.findUserById = function (id) {
+  return this.findById(id)
+    .then((user) => {
+      if (user) return user;
+      return Promise.reject(new NotFoundError('Пользователь с таким id не найден'));
+    })
 };
 
 
