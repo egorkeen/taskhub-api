@@ -11,7 +11,7 @@ module.exports.setToFirebase = (path, value) => {
   // сделать абстракцию для возможного внедрения своей базы данных
   set(reference, value)
     .then((r) => r)
-    .catch((err) => console.log(err));
+    .catch((err) => console.error(err));
 };
 
 module.exports.getFromFirebase = (path) => {
