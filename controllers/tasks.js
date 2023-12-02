@@ -8,7 +8,7 @@ module.exports.getTasks = (req, res, next) => {
 
 module.exports.createTask = async (req, res, next) => {
   try {
-    const { boardId } = req.params;
+    const { boardId, columnId } = req.params;
     const {
       title,
       description,
@@ -27,7 +27,7 @@ module.exports.createTask = async (req, res, next) => {
       id,
     };
 
-    const result = await setToDatabase(`${BOARDS}/${boardId}/tasks/`, newTask);
+    const result = await setToDatabase(`${BOARDS}/${boardId}/columns/${columnId}/tasks/`, newTask);
     res.send(result);
   } catch (err) {
     console.log(err);
