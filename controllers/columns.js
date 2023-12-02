@@ -1,6 +1,6 @@
 const { v4: uuid4 } = require("uuid");
-const {setToDatabase} = require("../utils/database");
-const {BOARDS} = require("../utils/constants/paths");
+const { setToDatabase, getFromDatabase} = require("../utils/database");
+const { BOARDS } = require("../utils/constants/paths");
 
 module.exports.createColumn = async (req, res, next) => {
   try {
@@ -21,6 +21,12 @@ module.exports.createColumn = async (req, res, next) => {
   }
 };
 
-module.exports.getColumns = (req, res, next) => {
-
+module.exports.getColumns = async (req, res, next) => {
+  try {
+    const { boardId } = req.params;
+    const columns = await getFromDatabase(`${BOARDS}/${boardId}/columns`);
+    res.send(columns);
+  } catch (err) {
+    console.error(err);
+  };
 };
