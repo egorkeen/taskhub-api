@@ -14,6 +14,7 @@ function getFromFirebase (path) {
       resolve(data);
     }, (error) => {
       reject(error);
+      console.error(error);
     });
   });
 };
