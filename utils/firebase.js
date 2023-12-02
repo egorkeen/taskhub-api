@@ -6,15 +6,7 @@ const app = initializeApp(firebaseConfig);
 
 const firebaseDb = getDatabase(app);
 
-module.exports.setToFirebase = (path, value) => {
-  const reference = ref(firebaseDb, path + '/' + value.id);
-  // сделать абстракцию для возможного внедрения своей базы данных
-  set(reference, value)
-    .then((r) => r)
-    .catch((err) => console.error(err));
-};
-
-module.exports.getFromFirebase = (path) => {
+function getFromFirebase (path) {
   return new Promise((resolve, reject) => {
     const distanceRef = ref(firebaseDb, path);
     onValue(distanceRef, (snapshot) => {
@@ -25,3 +17,16 @@ module.exports.getFromFirebase = (path) => {
     });
   });
 };
+
+async function setToFirebase (path, value) {
+  try {
+    const reference = ref(firebaseDb, `${path}/${value.id}`);
+    await set(reference, value);
+    const result = await getFromFirebase(path);
+    return result;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+module.exports = { getFromFirebase, setToFirebase };
