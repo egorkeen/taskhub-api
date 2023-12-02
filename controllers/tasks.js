@@ -1,10 +1,16 @@
 const { v4: uuid4 } = require('uuid');
-const { setToDatabase } = require("../utils/database");
+const { setToDatabase, getFromDatabase } = require("../utils/database");
 const { BOARDS } = require('../utils/constants/paths');
 
-module.exports.getTasks = (req, res, next) => {
-
-};
+// module.exports.getTasks = async (req, res, next) => {
+//   try {
+//     const { boardId, columnId } = req.params;
+//     const tasks = await getFromDatabase(`${BOARDS}/${boardId}/columns/${columnId}/tasks/`);
+//     res.send(tasks);
+//   } catch (err) {
+//     console.error(err);
+//   };
+// };
 
 module.exports.createTask = async (req, res, next) => {
   try {
