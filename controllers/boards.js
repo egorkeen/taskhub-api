@@ -1,6 +1,7 @@
 const { setToDatabase, getFromDatabase } = require('../utils/database');
-const { boards } = require('../utils/constants/paths');
+const { BOARDS } = require('../utils/constants/paths');
 const { v4: uuid4 } = require('uuid');
+const User = require('../models/User');
 
 module.exports.createBoard = async (req, res, next) => {
   try {
@@ -12,9 +13,9 @@ module.exports.createBoard = async (req, res, next) => {
       date,
     } = req.body;
 
-    const id = await uuid4();
+    const id = uuid4();
     const users = [];
-    const lists = [];
+    // users.push(id пользователя)
     const newBoard = {
       id,
       title,
@@ -22,22 +23,24 @@ module.exports.createBoard = async (req, res, next) => {
       owner,
       style,
       users,
-      // shareLink
-      lists,
+      date
     };
-    const result = await setToDatabase(boards, newBoard);
+    const result = await setToDatabase(BOARDS, newBoard);
     res.send(result);
   } catch (err) {
     console.log(err);
   }
 };
 
-module.exports.getUserBoards = (req, res, next) => {
-  const { nickname } = req.user;
-  const allBoards = getFromDatabase(boards);
-  if (allBoards) {
-    const boardsArr = Object.values(allBoards);
-    const userBoards = boardsArr.filter((board) => board.owner === nickname);
-    res.send(userBoards);
+module.exports.getUserBoards = async (req, res, next) => {
+  const { uid } = req.cookies;
+
+  const user = await User.findUserById(uid)
+  const { userBoardsIds = [] } = user;
+  const promiseArr = [];
+  for (const boardId of userBoardsIds) {
+    promiseArr.push(getFromDatabase(`${BOARDS}/${boardId}`));
   };
+  const userBoards = await Promise.all(promiseArr);
+  res.send(userBoards);
 };
