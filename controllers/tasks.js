@@ -14,7 +14,7 @@ module.exports.getTasks = async (req, res, next) => {
 
 module.exports.createTask = async (req, res, next) => {
   try {
-    const { boardId, columnId } = req.params;
+    const { boardId, sectionId } = req.params;
     const { nickname: author } = req.user;
     const {
       title,
@@ -27,7 +27,7 @@ module.exports.createTask = async (req, res, next) => {
       title,
       description,
       author,
-      columnId: columnId,
+      sectionId: sectionId,
       implementer: null,
       deadline,
       id,
