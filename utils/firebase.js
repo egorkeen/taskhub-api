@@ -19,7 +19,7 @@ function getFromFirebase (path) {
   });
 };
 
-async function setToFirebase (path, value) {
+async function patchToFirebase (path, value) {
   try {
     const reference = ref(firebaseDb, `${path}/${value.id}`);
     await set(reference, value);
@@ -28,6 +28,15 @@ async function setToFirebase (path, value) {
   } catch (err) {
     console.error(err);
   }
+}
+
+async function setToFirebase (path, value) {
+  try {
+    const reference = ref(firebaseDb, `${path}/${value.id}`);
+    return set(reference, value);
+  } catch (err) {
+    console.error(err);
+  }
 };
 
-module.exports = { getFromFirebase, setToFirebase };
+module.exports = { getFromFirebase, setToFirebase, patchToFirebase };

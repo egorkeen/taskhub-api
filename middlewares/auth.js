@@ -1,11 +1,12 @@
 const jwt = require('jsonwebtoken');
+const User = require('../models/User');
 
 const AuthorizeError = require('../errors/AuthorizeError');
 
 const { JWT_SECRET, NODE_ENV } = process.env;
 
-module.exports = (req, res, next) => {
-  const { jwt: token } = req.cookies;
+module.exports = async (req, res, next) => {
+  const { jwt: token, uid } = req.cookies;
 
   if (!token) {
     return next(new AuthorizeError('Необходима авторизация'));
@@ -20,6 +21,10 @@ module.exports = (req, res, next) => {
   } catch (err) {
     return next(new AuthorizeError('Необходима авторизация'));
   }
+
+  const user = await User.findUserById(uid);
+
+  req.user = user;
 
   return next();
 };

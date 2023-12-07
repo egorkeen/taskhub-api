@@ -4,6 +4,6 @@ const { celebrateCreateTask } = require('../middlewares/celebrate/celebrate-task
 const auth = require('../middlewares/auth');
 
 tasksRouter.post('/boards/:boardId/columns/:columnId/', auth, celebrateCreateTask, createTask);
-// tasksRouter.get('boards/:boardId/columns/:columnId/', auth, getTasks);
+tasksRouter.get('boards/:boardId/columns/:columnId/', auth, getTasks);
 
 module.exports = tasksRouter;

@@ -1,9 +1,17 @@
-const { setToFirebase, getFromFirebase } = require('./firebase');
+const { setToFirebase, getFromFirebase, patchToFirebase } = require('./firebase');
 
 module.exports.setToDatabase = async (path, value) => {
   try {
-    const result = await setToFirebase(path, value);
-    return result;
+    return setToFirebase(path, value);
+  } catch (error) {
+    console.error("Error setting data to database:", error);
+    throw error;
+  }
+};
+
+module.exports.patchToDatabase = async (value, path) => {
+  try {
+    return patchToFirebase(path, value);
   } catch (error) {
     console.error("Error setting data to database:", error);
     throw error;
@@ -12,8 +20,7 @@ module.exports.setToDatabase = async (path, value) => {
 
 module.exports.getFromDatabase = async (path) => {
   try {
-    const result = await getFromFirebase(path);
-    return result;
+    return getFromFirebase(path);
   } catch (error) {
     console.error("Error getting data from database:", error);
     throw error;

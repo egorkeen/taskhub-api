@@ -11,6 +11,7 @@ module.exports.createBoard = async (req, res, next) => {
     // id доски
     const id = uuid4();
     const users = [];
+
     // добавляем создателя в список пользователей доски
     users.push(uid);
 
@@ -26,21 +27,24 @@ module.exports.createBoard = async (req, res, next) => {
 
     res.send(result);
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
 module.exports.getUserBoards = async (req, res, next) => {
-  const { uid } = req.cookies;
+  try {
+    const { uid } = req.cookies;
 
-  const user = await User.findUserById(uid)
-  const { userBoardsIds = [] } = user;
-  const promiseArr = [];
-  for (const boardId of userBoardsIds) {
-    const board = await getFromDatabase(`${BOARDS}/${boardId}`);
-    console.log(board);
-    promiseArr.push(board);
-  };
-  const userBoards = await Promise.all(promiseArr);
-  res.send(userBoards);
+    const user = await User.findUserById(uid)
+    const { userBoardsIds = [] } = user;
+    const promiseArr = [];
+    for (const boardId of userBoardsIds) {
+      const board = await getFromDatabase(`${BOARDS}/${boardId}`);
+      promiseArr.push(board);
+    };
+    const userBoards = await Promise.all(promiseArr);
+    res.send(userBoards);
+  } catch(err) {
+    console.error(err);
+  }
 };
