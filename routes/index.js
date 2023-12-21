@@ -1,9 +1,13 @@
 const router = require('express').Router();
 
 const userRouter = require('./users');
-const todosRouter = require('./todos');
+const boardsRouter = require('./boards');
+const sectionsRouter = require('./sections');
+const tasksRouter = require('./tasks');
 
 router.use(userRouter);
-router.use(todosRouter);
+router.use(boardsRouter);
+router.use(sectionsRouter);
+router.use(tasksRouter);
 
 module.exports = router;

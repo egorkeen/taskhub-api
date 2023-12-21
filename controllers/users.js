@@ -59,7 +59,10 @@ module.exports.signIn = (req, res, next) => {
           { expiresIn: '7d' },
         );
 
-        return res.status(200).send({ token });
+        const sevenDays = 1000 * 60 * 60 * 24 * 7;
+        res.cookie('jwt', token, { maxAge: sevenDays})
+        res.cookie('uid', _id.toString())
+        return res.status(200).send();
       }
 
       throw new AuthorizeError('Неверный логин или пароль');
